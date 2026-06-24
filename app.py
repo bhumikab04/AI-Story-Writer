@@ -159,7 +159,11 @@ HTML_PAGE = """<!DOCTYPE html>
 
         const data = await response.json();
         if (!response.ok) {
-          throw new Error(data.detail || "Failed to generate story.");
+          const detail = data.detail;
+          const message = Array.isArray(detail)
+            ? detail.map((item) => item.msg || item).join(", ")
+            : (detail || "Failed to generate story.");
+          throw new Error(message);
         }
 
         resultEl.textContent = data.story;
@@ -193,6 +197,11 @@ def home():
     return HTML_PAGE
 
 
+@app.get("/health")
+def health():
+    return {"status": "ok"}
+
+
 @app.post("/api/generate")
 def generate_story(request: StoryRequest):
     if request.genre not in GENRES:
@@ -207,8 +216,10 @@ def generate_story(request: StoryRequest):
             request.length,
         )
         return {"story": story}
-    except Exception:
+    except ValueError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+    except Exception as exc:
         raise HTTPException(
             status_code=503,
             detail="Story generation failed. Check your API key or try again later.",
-        )
+        ) from exc

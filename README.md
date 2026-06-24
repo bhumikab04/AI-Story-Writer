@@ -51,7 +51,7 @@ cd AI-Story-Writer
 ```bash
 python -m venv venv
 source venv/bin/activate   # Windows: venv\Scripts\activate
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ### 3. Configure your API key
@@ -89,8 +89,8 @@ The Streamlit app opens at `http://localhost:8501`. The FastAPI app opens at `ht
 This project includes a FastAPI entrypoint (`app.py`) for Vercel serverless deployment.
 
 1. Import the repo on [Vercel](https://vercel.com)
-2. Add the environment variable `GOOGLE_API_KEY` in your project settings
-3. Deploy — Vercel will use `app.py` automatically
+2. Add `GOOGLE_API_KEY` in **Project Settings → Environment Variables**
+3. Redeploy — Vercel uses `app.py` via the FastAPI preset (`pyproject.toml` entrypoint)
 
 > **Note:** Streamlit cannot run on Vercel. Use `streamlit_app.py` locally for the full Streamlit experience with TTS narration.
 
@@ -106,7 +106,8 @@ This project includes a FastAPI entrypoint (`app.py`) for Vercel serverless depl
 
 | Variable | Description |
 |----------|-------------|
-| `GOOGLE_API_KEY` | Your Google Gemini API key (required) |
+| `GOOGLE_API_KEY` | Your Google Gemini API key (required on Vercel and locally) |
+| `GEMINI_API_KEY` | Alternative env var name also supported |
 
 ## License
 
