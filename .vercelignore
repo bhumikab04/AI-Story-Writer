@@ -1,0 +1,9 @@
+venv/
+.venv/
+__pycache__/
+*.pyc
+.streamlit/
+streamlit_app.py
+test.py
+*.mp3
+.env
