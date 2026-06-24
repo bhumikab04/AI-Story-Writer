@@ -26,7 +26,8 @@ A Streamlit app that turns a short story idea into a complete tale using **Googl
 
 ```
 AI-Story-Writer/
-├── app.py              # Streamlit UI
+├── app.py              # FastAPI app for Vercel deployment
+├── streamlit_app.py    # Streamlit UI for local development
 ├── story_generator.py  # Gemini story generation
 ├── tts.py              # Text-to-speech helper
 ├── prompts.py          # Prompt templates
@@ -67,13 +68,31 @@ GOOGLE_API_KEY=your_google_api_key_here
 
 Get a key from [Google AI Studio](https://aistudio.google.com/apikey).
 
-### 4. Run the app
+### 4. Run the app locally
+
+**Streamlit UI (with audio narration):**
 
 ```bash
-streamlit run app.py
+streamlit run streamlit_app.py
 ```
 
-The app opens at `http://localhost:8501`.
+**FastAPI UI (same as Vercel deployment):**
+
+```bash
+uvicorn app:app --reload
+```
+
+The Streamlit app opens at `http://localhost:8501`. The FastAPI app opens at `http://localhost:8000`.
+
+## Deploy on Vercel
+
+This project includes a FastAPI entrypoint (`app.py`) for Vercel serverless deployment.
+
+1. Import the repo on [Vercel](https://vercel.com)
+2. Add the environment variable `GOOGLE_API_KEY` in your project settings
+3. Deploy — Vercel will use `app.py` automatically
+
+> **Note:** Streamlit cannot run on Vercel. Use `streamlit_app.py` locally for the full Streamlit experience with TTS narration.
 
 ## Usage
 
